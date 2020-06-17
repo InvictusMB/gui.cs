@@ -364,7 +364,7 @@ namespace Terminal.Gui {
 		[DllImport ("api-ms-win-core-console-l1-1-0.dll", EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
 		public static extern bool ReadConsoleInput (
 			IntPtr hConsoleInput,
-			[Out] InputRecord [] lpBuffer,
+			[Out] IntPtr lpBuffer,
 			uint nLength,
 			out uint lpNumberOfEventsRead);
 
@@ -569,7 +569,7 @@ namespace Terminal.Gui {
 		}
 
 		// The records that we keep fetching
-		WindowsConsole.InputRecord [] result, records = new WindowsConsole.InputRecord [1];
+		WindowsConsole.InputRecord [] result;
 
 		void WindowsInputHandler ()
 		{
@@ -579,12 +579,18 @@ namespace Terminal.Gui {
 
 				uint numberEventsRead = 0;
 
-				WindowsConsole.ReadConsoleInput (winConsole.InputHandle, records, 1, out numberEventsRead);
+				const uint bufferSize = 1;
+				var pRecord = Marshal.AllocHGlobal (Marshal.SizeOf<WindowsConsole.InputRecord> ());
+				WindowsConsole.ReadConsoleInput (winConsole.InputHandle,
+					pRecord, bufferSize, out numberEventsRead);
 				if (numberEventsRead == 0)
 					result = null;
-				else
-					result = records;
+				else {
+					var record = Marshal.PtrToStructure<WindowsConsole.InputRecord> (pRecord);
+					result = new [] {record};
+				}
 
+				Marshal.FreeHGlobal (pRecord);
 				eventReady.Set ();
 			}
 		}
