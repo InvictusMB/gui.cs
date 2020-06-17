@@ -355,20 +355,20 @@ namespace Terminal.Gui {
 			}
 		}
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-processenvironment-l1-1-0.dll", SetLastError = true)]
 		static extern IntPtr GetStdHandle (int nStdHandle);
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-handle-l1-1-0.dll", SetLastError = true)]
 		static extern bool CloseHandle (IntPtr handle);
 
-		[DllImport ("kernel32.dll", EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
+		[DllImport ("api-ms-win-core-console-l1-1-0.dll", EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
 		public static extern bool ReadConsoleInput (
 			IntPtr hConsoleInput,
 			[Out] InputRecord [] lpBuffer,
 			uint nLength,
 			out uint lpNumberOfEventsRead);
 
-		[DllImport ("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll", EntryPoint = "ReadConsoleOutputW", SetLastError = true, CharSet = CharSet.Unicode)]
 		static extern bool ReadConsoleOutput (
 			IntPtr hConsoleOutput,
 			[Out] CharInfo [] lpBuffer,
@@ -377,7 +377,7 @@ namespace Terminal.Gui {
 			ref SmallRect lpReadRegion
 		);
 
-		[DllImport ("kernel32.dll", EntryPoint = "WriteConsoleOutput", SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll", EntryPoint = "WriteConsoleOutputW", SetLastError = true, CharSet = CharSet.Unicode)]
 		static extern bool WriteConsoleOutput (
 			IntPtr hConsoleOutput,
 			CharInfo [] lpBuffer,
@@ -386,17 +386,17 @@ namespace Terminal.Gui {
 			ref SmallRect lpWriteRegion
 		);
 
-		[DllImport ("kernel32.dll")]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll")]
 		static extern bool SetConsoleCursorPosition (IntPtr hConsoleOutput, Coord dwCursorPosition);
 
-		[DllImport ("kernel32.dll")]
+		[DllImport ("api-ms-win-core-console-l1-1-0.dll")]
 		static extern bool GetConsoleMode (IntPtr hConsoleHandle, out uint lpMode);
 
 
-		[DllImport ("kernel32.dll")]
+		[DllImport ("api-ms-win-core-console-l1-1-0.dll")]
 		static extern bool SetConsoleMode (IntPtr hConsoleHandle, uint dwMode);
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll", SetLastError = true)]
 		static extern IntPtr CreateConsoleScreenBuffer (
 			DesiredAccess dwDesiredAccess,
 			ShareMode dwShareMode,
@@ -408,10 +408,10 @@ namespace Terminal.Gui {
 		internal static IntPtr INVALID_HANDLE_VALUE = new IntPtr (-1);
 
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll", SetLastError = true)]
 		static extern bool SetConsoleActiveScreenBuffer (IntPtr Handle);
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-console-l1-1-0.dll", SetLastError = true)]
 		static extern bool GetNumberOfConsoleInputEvents (IntPtr handle, out uint lpcNumberOfEvents);
 		public uint InputEventCount {
 			get {
@@ -447,7 +447,7 @@ namespace Terminal.Gui {
 			public int dwMaximumWindowSize;
 		}
 
-		[DllImport ("kernel32.dll", SetLastError = true)]
+		[DllImport ("api-ms-win-core-console-l2-1-0.dll", SetLastError = true)]
 		static extern bool GetConsoleScreenBufferInfo (IntPtr hConsoleOutput, out CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo);
 
 		// Theoretically GetConsoleScreenBuffer height should give the console Windoww size
